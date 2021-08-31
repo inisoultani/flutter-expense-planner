@@ -65,7 +65,9 @@ class TransactionList extends StatelessWidget {
 
   List<_TransactionCard> renderTransactionCards() {
     return userTransactions
-        .map((transaction) => _TransactionCard(transaction: transaction,))
+        .map((transaction) => _TransactionCard(
+              transaction: transaction,
+            ))
         .toList();
   }
 
@@ -73,14 +75,21 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.505,
-      child: ListView(
-        children: [
-          Column(
-            children: [
-              ...this.renderTransactionCards(),
-            ],
-          ),
-        ],
+      child: ListView.builder(
+        itemCount: this.userTransactions.length,
+        itemBuilder: (context, idx) {
+          print('idx : $idx');
+          return _TransactionCard(
+            transaction: this.userTransactions[idx],
+          );
+        },
+        // children: [
+        //   Column(
+        //     children: [
+        //       ...this.renderTransactionCards(),
+        //     ],
+        //   ),
+        // ],
       ),
     );
   }
