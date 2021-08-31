@@ -27,10 +27,10 @@ class _UserTransactionsState extends State<UserTransactions> {
   ];
 
 
-  void createNewTransaction(String title, double amount) {
+  void _createNewTransaction(String title, double amount) {
     setState(() {
       _userTransactions.add(Transaction(
-        id: '123adf',
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
         date: DateTime.now(),
         title: title,
         amount: amount,
@@ -53,7 +53,7 @@ class _UserTransactionsState extends State<UserTransactions> {
           elevation: 1,
           color: Colors.teal[50],
         ),
-        TransactionForm(createNewTransaction: this.createNewTransaction,),
+        TransactionForm(createNewTransaction: this._createNewTransaction,),
         TransactionList(userTransactions: this._userTransactions,),
       ],
     );
