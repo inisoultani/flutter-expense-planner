@@ -7,10 +7,10 @@ class UserTransactions extends StatefulWidget {
   const UserTransactions({Key? key}) : super(key: key);
 
   @override
-  _UserTransactionsState createState() => _UserTransactionsState();
+  UserTransactionsState createState() => UserTransactionsState();
 }
 
-class _UserTransactionsState extends State<UserTransactions> {
+class UserTransactionsState extends State<UserTransactions> {
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
@@ -38,6 +38,15 @@ class _UserTransactionsState extends State<UserTransactions> {
     });
   }
 
+
+void openModalBottomSheetNewTransaction(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (buildContext) {
+          return TransactionForm(createNewTransaction: this._createNewTransaction);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +62,7 @@ class _UserTransactionsState extends State<UserTransactions> {
           elevation: 1,
           color: Colors.teal[50],
         ),
-        TransactionForm(createNewTransaction: this._createNewTransaction,),
+        // TransactionForm(createNewTransaction: this._createNewTransaction,),
         TransactionList(userTransactions: this._userTransactions,),
       ],
     );
