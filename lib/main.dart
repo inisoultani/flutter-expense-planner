@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         context: context,
         builder: (buildContext) {
-          return TransactionForm(createNewTransaction: this._createNewTransaction);
+          return TransactionForm(createNewTransaction: userTransactionsGlobalKey.currentState!.createNewTransaction);
         });
   }
 
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => userTransactionsGlobalKey.currentState?.openModalBottomSheetNewTransaction(context),
+        onPressed: () => userTransactionsGlobalKey.currentState!.openModalBottomSheetNewTransaction(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(

@@ -27,7 +27,7 @@ class UserTransactionsState extends State<UserTransactions> {
   ];
 
 
-  void _createNewTransaction(String title, double amount) {
+  void createNewTransaction(String title, double amount) {
     setState(() {
       _userTransactions.add(Transaction(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -43,7 +43,7 @@ void openModalBottomSheetNewTransaction(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (buildContext) {
-          return TransactionForm(createNewTransaction: this._createNewTransaction);
+          return TransactionForm(createNewTransaction: this.createNewTransaction);
         });
   }
 

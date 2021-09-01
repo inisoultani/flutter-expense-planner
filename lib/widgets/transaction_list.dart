@@ -18,7 +18,7 @@ class _TransactionCard extends StatelessWidget {
               '\$${transaction.amount.toStringAsFixed(2)}',
               style: TextStyle(
                   color: Colors.teal[50],
-                  fontSize: 25,
+                  fontSize: transaction.amount.toStringAsFixed(2).length > 6 ? 18 : 25,
                   fontWeight: FontWeight.w800),
             ),
             width: 110,
