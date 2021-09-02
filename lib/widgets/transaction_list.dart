@@ -35,11 +35,12 @@ class _TransactionCard extends StatelessWidget {
               Container(
                 child: Text(
                   transaction.title,
-                  style: TextStyle(
-                    color: Colors.teal[400],
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(context).textTheme.headline6,
+                  // style: TextStyle(
+                  //   color: Colors.teal[400],
+                  //   fontSize: 17,
+                  //   fontWeight: FontWeight.w700,
+                  // ),
                 ),
                 margin: EdgeInsets.only(bottom: 5),
               ),
@@ -75,22 +76,28 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.43,
-      child: ListView.builder(
-        itemCount: this.userTransactions.length,
-        itemBuilder: (context, idx) {
-          print('idx : $idx');
-          return _TransactionCard(
-            transaction: this.userTransactions[idx],
-          );
-        },
-        // children: [
-        //   Column(
-        //     children: [
-        //       ...this.renderTransactionCards(),
-        //     ],
-        //   ),
-        // ],
-      ),
+      child: this.userTransactions.isEmpty ?
+        Column(
+          children: [
+            Text(
+              'No transaction added yet.',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            Image.asset('assets/images/waiting-hourglass.png')
+          ],
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+        ) 
+        :
+        ListView.builder(
+          itemCount: this.userTransactions.length,
+          itemBuilder: (context, idx) {
+            print('idx : $idx');
+            return _TransactionCard(
+              transaction: this.userTransactions[idx],
+            );
+          },
+        ),
     );
   }
 }

@@ -15,7 +15,6 @@ class _TransactionFormState extends State<TransactionForm> {
   final amountInputController = TextEditingController();
 
   void submitData() {
-    
     var title = titleInputController.text;
     var amount = double.parse(amountInputController.text);
 
@@ -25,6 +24,9 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
     this.widget.createNewTransaction(title, amount);
+
+    // close bottom sheet automatically when done submit
+    Navigator.of(context).pop();
   }
 
   @override

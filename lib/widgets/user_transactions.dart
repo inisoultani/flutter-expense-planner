@@ -12,18 +12,18 @@ class UserTransactions extends StatefulWidget {
 
 class UserTransactionsState extends State<UserTransactions> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      amount: 21.22,
-      title: 'grocery',
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      amount: 10.21,
-      title: 'pharmacy',
-      date: DateTime.now(),
-    )
+    // Transaction(
+    //   id: 't1',
+    //   amount: 21.22,
+    //   title: 'grocery',
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   amount: 10.21,
+    //   title: 'pharmacy',
+    //   date: DateTime.now(),
+    // )
   ];
 
 
@@ -62,7 +62,6 @@ void openModalBottomSheetNewTransaction(BuildContext context) {
           elevation: 1,
           color: Colors.teal[50],
         ),
-        // TransactionForm(createNewTransaction: this._createNewTransaction,),
         TransactionList(userTransactions: this._userTransactions,),
       ],
     );

@@ -15,6 +15,24 @@ class ExpensePlannerApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        accentColor: Colors.tealAccent[400],
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.teal[400]
+          )
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+            ),
+          ),
+        ),
       ),
       home: MyHomePage(),
     );
