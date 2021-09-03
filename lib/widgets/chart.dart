@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
+import './chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -19,29 +20,42 @@ class Chart extends StatelessWidget {
         }
       }
       return {
-        'day': DateFormat.E().format(weekDay),
+        'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum,
       };
     });
   }
 
+  double get totalSpending {
+    return groupTransactions.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + double.parse(element['amount'].toString()));
+  }
+
   List<Column> renderCharts() {
-    return this.groupTransactions.map((group) {
+    return this.groupTransactions.map((data) {
       return Column(
         children: [
-          Text(
-            'Day'
-          ),
-          Text(
-            '${group['day']}'
-          ),
-          Text(
-            'Total'
-          ),
-          Text(
-             '${group['amount']}'
-          ),
+          Text('Day'),
+          Text('${data['day']}'),
+          Text('Total'),
+          Text('${data['amount']}'),
         ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      );
+    }).toList();
+  }
+
+  List<ChartBar> renderChartsBar() {
+    return this.groupTransactions.map((data) {
+      print(
+          'amount : ${data['amount'].toString()}, total spending : $totalSpending, result : ${double.parse(data['amount'].toString()) / totalSpending}');
+      return ChartBar(
+        label: data['day'].toString(),
+        spendingAmount: double.parse(data['amount'].toString()),
+        spendingPctTotal:
+           totalSpending > 0.0 ? double.parse(data['amount'].toString()) / totalSpending : totalSpending,
       );
     }).toList();
   }
@@ -51,13 +65,12 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(10),
-      
       color: Colors.teal[50],
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
-            children: [...renderCharts()],
+            children: [...renderChartsBar()],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
