@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './transaction_list.dart';
 import './transaction_form.dart';
 import '../models/transaction.dart';
+import '../widgets/chart.dart';
 
 class UserTransactions extends StatefulWidget {
   const UserTransactions({Key? key}) : super(key: key);
@@ -55,9 +56,9 @@ void openModalBottomSheetNewTransaction(BuildContext context) {
       children: [
         Card(
           child: Container(
-            child: Text('Card Widget'),
+            child: Chart(recentTransactions: this._userTransactions,),
             width: double.infinity,
-            height: 100,
+            height: 120,
           ),
           elevation: 1,
           color: Colors.teal[50],

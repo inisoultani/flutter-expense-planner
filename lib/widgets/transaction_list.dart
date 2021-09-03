@@ -83,7 +83,11 @@ class TransactionList extends StatelessWidget {
               'No transaction added yet.',
               style: Theme.of(context).textTheme.headline6,
             ),
-            Image.asset('assets/images/waiting-hourglass.png')
+            ColorFiltered(
+              child: Image.asset('assets/images/waiting-hourglass.png'),
+              colorFilter: ColorFilter.mode(Colors.teal, BlendMode.srcATop)
+            )
+           
           ],
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
