@@ -50,10 +50,15 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Row(
-        children: [...renderCharts()],
+      margin: EdgeInsets.all(10),
+      child: Container(
+        child: Row(
+          children: [...renderCharts()],
+        ),
+        width: double.infinity,
+        height: 120,
       ),
+      color: Colors.teal[50],
     );
   }
 }

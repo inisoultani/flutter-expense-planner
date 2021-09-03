@@ -27,6 +27,16 @@ class UserTransactionsState extends State<UserTransactions> {
     // )
   ];
 
+  List<Transaction> get _recentTransaction {
+    return this._userTransactions.where((transaction) {
+      return transaction.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7)
+        )
+      );
+    }).toList();
+  }
+
 
   void createNewTransaction(String title, double amount) {
     setState(() {
@@ -54,15 +64,7 @@ void openModalBottomSheetNewTransaction(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Card(
-          child: Container(
-            child: Chart(recentTransactions: this._userTransactions,),
-            width: double.infinity,
-            height: 120,
-          ),
-          elevation: 1,
-          color: Colors.teal[50],
-        ),
+        Chart(recentTransactions: this._recentTransaction,),
         TransactionList(userTransactions: this._userTransactions,),
       ],
     );
