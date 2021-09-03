@@ -51,14 +51,20 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(10),
+      
+      color: Colors.teal[50],
       child: Container(
-        child: Row(
-          children: [...renderCharts()],
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [...renderCharts()],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
         ),
         width: double.infinity,
         height: 120,
       ),
-      color: Colors.teal[50],
     );
   }
 }
