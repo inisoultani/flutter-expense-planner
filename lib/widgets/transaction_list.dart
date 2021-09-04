@@ -14,12 +14,17 @@ class _TransactionCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            child: Text(
-              '\$${transaction.amount.toStringAsFixed(2)}',
-              style: TextStyle(
-                  color: Colors.teal[50],
-                  fontSize: transaction.amount.toStringAsFixed(2).length > 6 ? 18 : 25,
-                  fontWeight: FontWeight.w800),
+            child: FittedBox(
+              child: Padding(
+                padding: EdgeInsets.only(right: 4, left: 4),
+                child: Text(
+                  '\$${transaction.amount.toStringAsFixed(2)}',
+                  style: TextStyle(
+                      color: Colors.teal[50],
+                      fontSize: transaction.amount.toStringAsFixed(2).length > 6 ? 18 : 25,
+                      fontWeight: FontWeight.w800),
+                ),
+              ),
             ),
             width: 110,
             height: 40,

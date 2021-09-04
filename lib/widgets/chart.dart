@@ -47,15 +47,18 @@ class Chart extends StatelessWidget {
     }).toList();
   }
 
-  List<ChartBar> renderChartsBar() {
+  List<Flexible> renderChartsBar() {
     return this.groupTransactions.map((data) {
       print(
           'amount : ${data['amount'].toString()}, total spending : $totalSpending, result : ${double.parse(data['amount'].toString()) / totalSpending}');
-      return ChartBar(
-        label: data['day'].toString(),
-        spendingAmount: double.parse(data['amount'].toString()),
-        spendingPctTotal:
-           totalSpending > 0.0 ? double.parse(data['amount'].toString()) / totalSpending : totalSpending,
+      return Flexible(
+        fit: FlexFit.tight,
+        child: ChartBar(
+          label: data['day'].toString(),
+          spendingAmount: double.parse(data['amount'].toString()),
+          spendingPctTotal:
+             totalSpending > 0.0 ? double.parse(data['amount'].toString()) / totalSpending : totalSpending,
+        ),
       );
     }).toList();
   }

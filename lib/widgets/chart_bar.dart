@@ -15,7 +15,7 @@ class ChartBar extends StatelessWidget {
     //print('spendingPctTotal : $spendingPctTotal');
     return Column(
       children: [
-        Text('\$${spendingAmount.toStringAsFixed(0)}'),
+        FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}')),
         SizedBox(
           height: 4,
         ),
@@ -54,3 +54,4 @@ class ChartBar extends StatelessWidget {
     );
   }
 }
+//_3nU2B\q^p@*?mD
