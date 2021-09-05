@@ -3,6 +3,52 @@ import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
+class TransactionList extends StatelessWidget {
+  final List<Transaction> userTransactions;
+
+  TransactionList({required this.userTransactions});
+
+  List<_TransactionCard> renderTransactionCards() {
+    return userTransactions
+        .map((transaction) => _TransactionCard(
+              transaction: transaction,
+            ))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.43,
+      child: this.userTransactions.isEmpty
+          ? Column(
+              children: [
+                Text(
+                  'No transaction added yet.',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                ColorFiltered(
+                    child: Image.asset('assets/images/waiting-hourglass.png'),
+                    colorFilter:
+                        ColorFilter.mode(Colors.teal, BlendMode.srcATop))
+              ],
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+            )
+          : ListView.builder(
+              itemCount: this.userTransactions.length,
+              itemBuilder: (context, idx) {
+                print('idx : $idx');
+                // return _TransactionCard(
+                //   transaction: this.userTransactions[idx],
+                // );
+                return _ListTileCard(transaction: this.userTransactions[idx],);
+              },
+            ),
+    );
+  }
+}
+
 class _TransactionCard extends StatelessWidget {
   final Transaction transaction;
 
@@ -21,7 +67,9 @@ class _TransactionCard extends StatelessWidget {
                   '\$${transaction.amount.toStringAsFixed(2)}',
                   style: TextStyle(
                       color: Colors.teal[50],
-                      fontSize: transaction.amount.toStringAsFixed(2).length > 6 ? 18 : 25,
+                      fontSize: transaction.amount.toStringAsFixed(2).length > 6
+                          ? 18
+                          : 25,
                       fontWeight: FontWeight.w800),
                 ),
               ),
@@ -64,49 +112,40 @@ class _TransactionCard extends StatelessWidget {
   }
 }
 
-class TransactionList extends StatelessWidget {
-  final List<Transaction> userTransactions;
+class _ListTileCard extends StatelessWidget {
+  final Transaction transaction;
 
-  TransactionList({required this.userTransactions});
-
-  List<_TransactionCard> renderTransactionCards() {
-    return userTransactions
-        .map((transaction) => _TransactionCard(
-              transaction: transaction,
-            ))
-        .toList();
-  }
+  _ListTileCard({required this.transaction});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.43,
-      child: this.userTransactions.isEmpty ?
-        Column(
-          children: [
-            Text(
-              'No transaction added yet.',
-              style: Theme.of(context).textTheme.headline6,
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      child: ListTile(
+        leading: CircleAvatar(
+          child: FittedBox(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Text(
+                '\$${this.transaction.amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                    color: Colors.teal[50],
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800),
+              ),
             ),
-            ColorFiltered(
-              child: Image.asset('assets/images/waiting-hourglass.png'),
-              colorFilter: ColorFilter.mode(Colors.teal, BlendMode.srcATop)
-            )
-           
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ) 
-        :
-        ListView.builder(
-          itemCount: this.userTransactions.length,
-          itemBuilder: (context, idx) {
-            print('idx : $idx');
-            return _TransactionCard(
-              transaction: this.userTransactions[idx],
-            );
-          },
+          ),
         ),
+        title: Text(
+          transaction.title,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        subtitle: Text(
+          DateFormat.yMEd().add_jms().format(transaction.date),
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ),
     );
   }
 }
