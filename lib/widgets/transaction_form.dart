@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-class TransactionForm extends StatelessWidget {
-  final titleInputController = TextEditingController();
-  final amountInputController = TextEditingController();
+class TransactionForm extends StatefulWidget {
   final Function createNewTransaction;
 
   TransactionForm({required this.createNewTransaction});
 
+  @override
+  _TransactionFormState createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final titleInputController = TextEditingController();
+
+  final amountInputController = TextEditingController();
+
   void submitData() {
-    
     var title = titleInputController.text;
     var amount = double.parse(amountInputController.text);
 
@@ -17,9 +23,11 @@ class TransactionForm extends StatelessWidget {
       return;
     }
 
-    this.createNewTransaction(title, amount);
-  }
+    this.widget.createNewTransaction(title, amount);
 
+    // close bottom sheet automatically when done submit
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {

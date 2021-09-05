@@ -15,6 +15,24 @@ class ExpensePlannerApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        accentColor: Colors.tealAccent[400],
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.teal[400]
+          )
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+            ),
+          ),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -60,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         context: context,
         builder: (buildContext) {
-          return TransactionForm(createNewTransaction: this._createNewTransaction);
+          return TransactionForm(createNewTransaction: userTransactionsGlobalKey.currentState!.createNewTransaction);
         });
   }
 
@@ -81,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => userTransactionsGlobalKey.currentState?.openModalBottomSheetNewTransaction(context),
+        onPressed: () => userTransactionsGlobalKey.currentState!.openModalBottomSheetNewTransaction(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
