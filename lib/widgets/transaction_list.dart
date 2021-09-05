@@ -5,8 +5,10 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
+  final Function deleteTransaction;
 
-  TransactionList({required this.userTransactions});
+  TransactionList(
+      {required this.userTransactions, required this.deleteTransaction});
 
   List<_TransactionCard> renderTransactionCards() {
     return userTransactions
@@ -19,7 +21,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.43,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: this.userTransactions.isEmpty
           ? Column(
               children: [
@@ -42,7 +44,10 @@ class TransactionList extends StatelessWidget {
                 // return _TransactionCard(
                 //   transaction: this.userTransactions[idx],
                 // );
-                return _ListTileCard(transaction: this.userTransactions[idx],);
+                return _ListTileCard(
+                  transaction: this.userTransactions[idx],
+                  deleteTransaction: this.deleteTransaction,
+                );
               },
             ),
     );
@@ -114,8 +119,9 @@ class _TransactionCard extends StatelessWidget {
 
 class _ListTileCard extends StatelessWidget {
   final Transaction transaction;
+  final Function deleteTransaction;
 
-  _ListTileCard({required this.transaction});
+  _ListTileCard({required this.transaction, required this.deleteTransaction});
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +150,11 @@ class _ListTileCard extends StatelessWidget {
         subtitle: Text(
           DateFormat.yMEd().add_jms().format(transaction.date),
           style: TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          color: Theme.of(context).errorColor,
+          onPressed: () => this.deleteTransaction(transaction.id),
         ),
       ),
     );

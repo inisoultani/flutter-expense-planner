@@ -17,13 +17,20 @@ class ExpensePlannerApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         accentColor: Colors.tealAccent[400],
         fontFamily: 'Quicksand',
+        errorColor: Colors.red,
         textTheme: ThemeData.light().textTheme.copyWith(
           headline6: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 17,
             fontWeight: FontWeight.bold,
             color: Colors.teal[400]
-          )
+          ),
+          button: TextStyle(color: Colors.white)
+        ),
+        buttonTheme: ThemeData.light().buttonTheme.copyWith(
+          focusColor: Colors.red,
+          buttonColor: Colors.red,
+          height: 30,
         ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(

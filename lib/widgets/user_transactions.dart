@@ -29,32 +29,34 @@ class UserTransactionsState extends State<UserTransactions> {
 
   List<Transaction> get _recentTransaction {
     return this._userTransactions.where((transaction) {
-      return transaction.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7)
-        )
-      );
+      return transaction.date
+          .isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
-
-  void createNewTransaction(String title, double amount) {
+  void createNewTransaction(String title, double amount, DateTime trxDateTime) {
     setState(() {
       _userTransactions.add(Transaction(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        date: DateTime.now(),
+        date: trxDateTime != null ? trxDateTime : DateTime.now(),
         title: title,
         amount: amount,
       ));
     });
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
 
-void openModalBottomSheetNewTransaction(BuildContext context) {
+  void openModalBottomSheetNewTransaction(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (buildContext) {
-          return TransactionForm(createNewTransaction: this.createNewTransaction);
+          return TransactionForm(
+              createNewTransaction: this.createNewTransaction);
         });
   }
 
@@ -64,8 +66,13 @@ void openModalBottomSheetNewTransaction(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Chart(recentTransactions: this._recentTransaction,),
-        TransactionList(userTransactions: this._userTransactions,),
+        Chart(
+          recentTransactions: this._recentTransaction,
+        ),
+        TransactionList(
+          userTransactions: this._userTransactions,
+          deleteTransaction: this._deleteTransaction,
+        ),
       ],
     );
   }
