@@ -20,37 +20,39 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      child: this.userTransactions.isEmpty
-          ? Column(
+    return this.userTransactions.isEmpty
+        ? LayoutBuilder(builder: (context, constraints) {
+            return Column(
               children: [
                 Text(
                   'No transaction added yet.',
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                ColorFiltered(
-                    child: Image.asset('assets/images/waiting-hourglass.png'),
-                    colorFilter:
-                        ColorFilter.mode(Colors.teal, BlendMode.srcATop))
+                Container(
+                  height: constraints.maxHeight * 0.6,
+                  child: ColorFiltered(
+                      child: Image.asset('assets/images/waiting-hourglass.png'),
+                      colorFilter:
+                          ColorFilter.mode(Colors.teal, BlendMode.srcATop)),
+                )
               ],
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-            )
-          : ListView.builder(
-              itemCount: this.userTransactions.length,
-              itemBuilder: (context, idx) {
-                print('idx : $idx');
-                // return _TransactionCard(
-                //   transaction: this.userTransactions[idx],
-                // );
-                return _ListTileCard(
-                  transaction: this.userTransactions[idx],
-                  deleteTransaction: this.deleteTransaction,
-                );
-              },
-            ),
-    );
+            );
+          })
+        : ListView.builder(
+            itemCount: this.userTransactions.length,
+            itemBuilder: (context, idx) {
+              print('idx : $idx');
+              // return _TransactionCard(
+              //   transaction: this.userTransactions[idx],
+              // );
+              return _ListTileCard(
+                transaction: this.userTransactions[idx],
+                deleteTransaction: this.deleteTransaction,
+              );
+            },
+          );
   }
 }
 
@@ -151,11 +153,21 @@ class _ListTileCard extends StatelessWidget {
           DateFormat.yMEd().add_jms().format(transaction.date),
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        trailing: IconButton(
+        trailing: MediaQuery.of(context).size.width > 360 ?
+        TextButton.icon(
+          onPressed: () => this.deleteTransaction(transaction.id), 
+          icon: Icon(Icons.delete), 
+          label: Text('Delete'),
+          style: TextButton.styleFrom(
+            primary: Theme.of(context).errorColor,
+          ),
+        )
+        :
+        IconButton(
           icon: Icon(Icons.delete),
           color: Theme.of(context).errorColor,
           onPressed: () => this.deleteTransaction(transaction.id),
-        ),
+        )
       ),
     );
   }

@@ -5,27 +5,16 @@ import '../models/transaction.dart';
 import '../widgets/chart.dart';
 
 class UserTransactions extends StatefulWidget {
-  const UserTransactions({Key? key}) : super(key: key);
+  final double appBarHeight = 0.0;
+  const UserTransactions({Key? key, double? appBarHeight}) : super(key: key);
 
   @override
   UserTransactionsState createState() => UserTransactionsState();
 }
 
 class UserTransactionsState extends State<UserTransactions> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 't1',
-    //   amount: 21.22,
-    //   title: 'grocery',
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   amount: 10.21,
-    //   title: 'pharmacy',
-    //   date: DateTime.now(),
-    // )
-  ];
+  bool _showChart = true;
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransaction {
     return this._userTransactions.where((transaction) {
@@ -60,20 +49,82 @@ class UserTransactionsState extends State<UserTransactions> {
         });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget landscapeLayout(double bottomNavbarHeight) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Chart(
-          recentTransactions: this._recentTransaction,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Show Chart', style: Theme.of(context).textTheme.title,),
+            Card(
+              child: Switch(
+                value: this._showChart,
+                onChanged: (val) {
+                  setState(() {
+                    this._showChart = val;
+                  });
+              }),
+            )
+          ],
         ),
-        TransactionList(
-          userTransactions: this._userTransactions,
-          deleteTransaction: this._deleteTransaction,
+        this._showChart
+            ? Container(
+                height:
+                    (MediaQuery.of(context).size.height - widget.appBarHeight) *
+                        0.5,
+                child: Chart(
+                  recentTransactions: this._recentTransaction,
+                ),
+              )
+            : Container(
+                height: (MediaQuery.of(context).size.height -
+                        widget.appBarHeight -
+                        bottomNavbarHeight) *
+                    0.79,
+                child: TransactionList(
+                  userTransactions: this._userTransactions,
+                  deleteTransaction: this._deleteTransaction,
+                ),
+              ),
+      ],
+    );
+  }
+
+  Widget potraitLayout(double bottomNavbarHeight) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          height:
+              (MediaQuery.of(context).size.height - widget.appBarHeight) * 0.21,
+          child: Chart(
+            recentTransactions: this._recentTransaction,
+          ),
+        ),
+        Container(
+          height: (MediaQuery.of(context).size.height -
+                  widget.appBarHeight -
+                  bottomNavbarHeight) *
+              0.79,
+          child: TransactionList(
+            userTransactions: this._userTransactions,
+            deleteTransaction: this._deleteTransaction,
+          ),
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    double bottomNavbarHeight = 175;
+    return isLandscape
+        ? landscapeLayout(bottomNavbarHeight)
+        : potraitLayout(bottomNavbarHeight);
   }
 }

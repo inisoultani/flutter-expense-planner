@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './adaptive_flat_button.dart';
+import 'dart:io';
 
 class TransactionForm extends StatefulWidget {
   final Function createNewTransaction;
@@ -20,7 +23,8 @@ class _TransactionFormState extends State<TransactionForm> {
     var amount = double.parse(amountInputController.text);
 
     if (title.isEmpty || amount <= 0 || _pickedDate == null) {
-      print('empty title : $title or small amount : $amount or empty date : $_pickedDate');
+      print(
+          'empty title : $title or small amount : $amount or empty date : $_pickedDate');
       return;
     }
 
@@ -46,45 +50,48 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        child: Column(
-          children: [
-            TextField(
-              controller: titleInputController,
-              decoration: InputDecoration(labelText: 'Title'),
-              onSubmitted: (_) => this._submitData(),
-            ),
-            TextField(
-              controller: amountInputController,
-              decoration: InputDecoration(labelText: 'Amount'),
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => this._submitData(),
-            ),
-            Row(
-              children: [
-                Text(this._pickedDate == null ? 'No date choosed' :  'Choosed Date : ${DateFormat.yMEd().add_jms().format(this._pickedDate!)}'),
-                TextButton(
-                  onPressed: () => this._presentDatePicker(context),
-                  child: Text(
-                    'Choose Date',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () => this._submitData(),
-              child: Text('Submit Transaction'),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.teal,
-                  textStyle:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.end,
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          child: Column(
+            children: [
+              TextField(
+                controller: titleInputController,
+                decoration: InputDecoration(labelText: 'Title'),
+                onSubmitted: (_) => this._submitData(),
+              ),
+              TextField(
+                controller: amountInputController,
+                decoration: InputDecoration(labelText: 'Amount'),
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => this._submitData(),
+              ),
+              Row(
+                children: [
+                  Text(this._pickedDate == null
+                      ? 'No date choosed'
+                      : 'Choosed Date : ${DateFormat.yMEd().add_jms().format(this._pickedDate!)}'),
+                  AdaptiveButton(text: 'Choose Date', handler: this._presentDatePicker)
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              ElevatedButton(
+                onPressed: () => this._submitData(),
+                child: Text('Submit Transaction'),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.teal,
+                    textStyle:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              ),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.end,
+          ),
+          padding: EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 30),
         ),
-        padding: EdgeInsets.all(10),
       ),
     );
   }
