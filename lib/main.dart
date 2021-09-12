@@ -4,7 +4,6 @@ import 'widgets/user_transactions.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import './widgets//transaction_form.dart';
-import '../models/transaction.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
@@ -58,9 +57,7 @@ class ExpensePlannerApp extends StatelessWidget {
   CupertinoApp buildCupertinoApp() {
     return CupertinoApp(
       title: 'Flutter Demo',
-      theme: CupertinoThemeData(
-
-      ),
+      theme: CupertinoThemeData(),
       home: MyHomePage(),
     );
   }
@@ -73,32 +70,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final userTransactionsGlobalKey = GlobalKey<UserTransactionsState>();
-
-  final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      amount: 21.22,
-      title: 'grocery',
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      amount: 10.21,
-      title: 'pharmacy',
-      date: DateTime.now(),
-    )
-  ];
-
-  void _createNewTransaction(String title, double amount) {
-    setState(() {
-      _userTransactions.add(Transaction(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        date: DateTime.now(),
-        title: title,
-        amount: amount,
-      ));
-    });
-  }
 
   void openModalBottomSheetNewTransaction(BuildContext context) {
     showModalBottomSheet(
@@ -116,9 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final PreferredSizeWidget appBar = !Platform.isIOS ?  AppBar(
+  PreferredSizeWidget buildAndroidAppBar() {
+    return AppBar(
       title: Text('Flutter App'),
       actions: [
         IconButton(
@@ -126,9 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
           icon: Icon(Icons.add),
         ),
       ],
-    )  as  PreferredSizeWidget
-    :
-    CupertinoNavigationBar(
+    );
+  }
+
+  PreferredSizeWidget buildIosAppBar() {
+    return CupertinoNavigationBar(
       middle: Text('Flutter App'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -137,46 +109,55 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Icon(CupertinoIcons.add),
             onTap: () => this.openModalBottomSheetNewTransaction(context),
           )
-        ],),
+        ],
+      ),
     );
+  }
 
-    var pageBody = SafeArea(child: SingleChildScrollView(
-        child: UserTransactions(
-          key: userTransactionsGlobalKey,
-          appBarHeight:
-              appBar.preferredSize.height + MediaQuery.of(context).padding.top,
-        ),
-      )
-    );
+  @override
+  Widget build(BuildContext context) {
+    final PreferredSizeWidget appBar = !Platform.isIOS
+        ? buildAndroidAppBar()
+        : buildIosAppBar();
 
-    return  !Platform.isIOS ? 
-    Scaffold(
-      appBar: appBar,
-      body: pageBody,
-      floatingActionButton: !Platform.isIOS
-          ? FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => userTransactionsGlobalKey.currentState!
-                  .openModalBottomSheetNewTransaction(context),
-            )
-          : Container(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: !Platform.isIOS
-          ? BottomNavigationBar(
-              items: [
-                BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
-                BottomNavigationBarItem(
-                    label: 'Settings', icon: Icon(Icons.settings))
-              ],
-            )
-          : Container(
-              height: 0,
-            ),
-    )
-    :
-    CupertinoPageScaffold(
-      navigationBar: appBar as ObstructingPreferredSizeWidget,
-      child: pageBody,
-    );
+    var pageBody = SafeArea(
+        child: SingleChildScrollView(
+      child: UserTransactions(
+        key: userTransactionsGlobalKey,
+        appBarHeight:
+            appBar.preferredSize.height + MediaQuery.of(context).padding.top,
+      ),
+    ));
+
+    return !Platform.isIOS
+        ? Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButton: !Platform.isIOS
+                ? FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => userTransactionsGlobalKey.currentState!
+                        .openModalBottomSheetNewTransaction(context),
+                  )
+                : Container(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: !Platform.isIOS
+                ? BottomNavigationBar(
+                    items: [
+                      BottomNavigationBarItem(
+                          label: 'Home', icon: Icon(Icons.home)),
+                      BottomNavigationBarItem(
+                          label: 'Settings', icon: Icon(Icons.settings))
+                    ],
+                  )
+                : Container(
+                    height: 0,
+                  ),
+          )
+        : CupertinoPageScaffold(
+            navigationBar: appBar as ObstructingPreferredSizeWidget,
+            child: pageBody,
+          );
   }
 }
